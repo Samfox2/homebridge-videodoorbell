@@ -120,12 +120,33 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                     var params = qs.parse(body.toString());
                     res.end(JSON.stringify(params) + '\n');
                     // todo: add validation
+                    console.log("Video-doorbell %s rang!", cameraName);
                     self.EventWithAccessory(videodoorbellAccessory);
                 }));
             });
+
+            //var server = http.createServer(self.handleRequest.bind(this));
+
+            server.on('error', function (err) {
+                console.log("Video-doorbell %s Port %s Server %s ", cameraName, server.address().port, err);
+            }.bind(this));
+
+
             server.listen(webserverPort, function () {
                 console.log("Video-doorbell %s is listening on port %s", cameraName, server.address().port);
             }.bind(this));
         });
     }
 }
+
+//videodoorbellPlatform.prototype.handleRequest = function (request, response) {
+
+//    //console.log("Video-doorbell: request");
+//    request.pipe(concat(function (body) {
+//        var params = qs.parse(body.toString());
+//        response.end(JSON.stringify(params) + '\n');
+//        // todo: add validation
+//        self.EventWithAccessory(videodoorbellAccessory);
+//    }));
+//}
+
