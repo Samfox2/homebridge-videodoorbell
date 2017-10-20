@@ -110,20 +110,21 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             //primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
             //}.bind(this), 10000);
 
-        });
 
-        self.api.publishCameraAccessories("Video-doorbell", configuredAccessories);
+            self.api.publishCameraAccessories("Video-doorbell", configuredAccessories);
 
-        // Create http-server to trigger doorbell from outside: curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
-        // todo: allow user defined port definition
-        var server = http.createServer(function (req, res) {
-            req.pipe(concat(function (body) {
-                var params = qs.parse(body.toString());
-                res.end(JSON.stringify(params) + '\n');
-                // todo: handle multiple accessories, add validation
-                self.EventWithAccessory(configuredAccessories[0]); // at this time first accessory is hardcoded
-            }));
+            // Create http-server to trigger doorbell from outside: 
+            // curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
+            var server = http.createServer(function (req, res) {
+                req.pipe(concat(function (body) {
+                    var params = qs.parse(body.toString());
+                    res.end(JSON.stringify(params) + '\n');
+                    // todo: add validation
+                    self.EventWithAccessory(videodoorbellAccessory);
+                }));
+            });
+            server.listen(webserverPort);
+
         });
-        server.listen(self.config.cameras.webserverPort); // at this time port number is hardcoded
     }
 }
