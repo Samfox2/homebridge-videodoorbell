@@ -71,9 +71,9 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
         cameras.forEach(function (cameraConfig) {
             var cameraName = cameraConfig.name;
             var videoConfig = cameraConfig.videoConfig;
-            var webserverPort = cameraConfig.port;
+            var webserverPort = cameraConfig.port || 5005;
 
-            if (!cameraName || !videoConfig || !webserverPort) {
+            if (!cameraName || !videoConfig) {
                 console.log("Missing parameters.");
                 return;
             }
