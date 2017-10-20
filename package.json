@@ -1,0 +1,52 @@
+{
+
+  "name": "homebridge-videodoorbell",
+
+  "version": "0.1.0",
+
+  "description": "Video doorbell plugin for homebridge: https://github.com/nfarina/homebridge",
+
+  "license": "ISC",
+
+  "keywords": [
+
+    "homebridge-plugin"
+
+  ],
+
+  "repository": {
+
+    "type": "git",
+
+    "url": "git://github.com/Samfox2/homebridge-videodoorbell.git"
+
+  },
+
+  "bugs": {
+
+    "url": "http://github.com/Samfox2/homebridge-videodoorbell/issues"
+
+  },
+
+  "engines": {
+
+    "node": ">=5.0.0",
+
+    "homebridge": ">=0.4.5"
+
+  },
+
+  "dependencies": {
+
+    "google-auth-library": "^0.10.0",
+
+    "googleapis": "^18.0.0",
+
+    "ip": "^1.1.3",
+
+    "debug": "^2.2.0",
+
+    "concat-stream": "^1.6.0"
+
+  }
+}
