@@ -25,7 +25,7 @@ for [Homebridge](https://github.com/nfarina/homebridge)
           	"maxWidth": 1280,
           	"maxHeight": 720,
           	"maxFPS": 30,
-			"port": 5005
+          	"port": 5005    
           }
         }
       ]
@@ -47,7 +47,7 @@ for [Homebridge](https://github.com/nfarina/homebridge)
       	"maxHeight": 720,
       	"maxFPS": 30,
       	"vcodec": "h264_omx",
-		"port": 5005            
+	"port": 5005            
       }
     }
   ]
@@ -78,7 +78,8 @@ To enable this feature, please add a new config option "uploader", and follow th
       	"maxWidth": 1280,
       	"maxHeight": 720,
       	"maxFPS": 30,
-      	"vcodec": "h264_omx"            
+      	"vcodec": "h264_omx",
+	"port": 5005         
       }
     }
   ]
