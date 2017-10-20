@@ -71,7 +71,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
         cameras.forEach(function (cameraConfig) {
             var cameraName = cameraConfig.name;
             var videoConfig = cameraConfig.videoConfig;
-            var webserverPort = cameraConfig.port || 5005;
+            var webserverPort = videoConfig.port || 5005;
 
             if (!cameraName || !videoConfig) {
                 console.log("Missing parameters.");
@@ -126,14 +126,12 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             });
 
             //var server = http.createServer(self.handleRequest.bind(this));
-
-            server.on('error', function (err) {
-                console.log("Video-doorbell %s Port %s Server %s ", cameraName, server.address().port, err);
+            server.listen(webserverPort, function () {
+                console.log("Video-doorbell %s is listening on port %s", cameraName, webserverPort);
             }.bind(this));
 
-
-            server.listen(webserverPort, function () {
-                console.log("Video-doorbell %s is listening on port %s", cameraName, server.address().port);
+	    server.on('error', function (err) {
+                console.log("Video-doorbell %s Port %s Server %s ", cameraName, webserverPort, err);
             }.bind(this));
         });
     }
