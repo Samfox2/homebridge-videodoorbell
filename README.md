@@ -3,7 +3,7 @@
 Video-Doorbell plugin based on [homebridge-camera-ffmpeg](https://github.com/KhaosT/homebridge-camera-ffmpeg) 
 for [Homebridge](https://github.com/nfarina/homebridge)
 
-## Triggering HomeKit rich notifications via curl command
+## Triggering HomeKit rich notifications
  
 You can trigger a homekit rich notifications from outside with a simple curl command: 
 curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:PORT_DEFINED_IN_CONFIG
