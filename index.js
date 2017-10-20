@@ -123,8 +123,9 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                     self.EventWithAccessory(videodoorbellAccessory);
                 }));
             });
-            server.listen(webserverPort);
-
+            server.listen(webserverPort, function () {
+                console.log("VideoDoorbell is listening on port %s", server.address().port);
+            }.bind(this));
         });
     }
 }
