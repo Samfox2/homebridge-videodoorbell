@@ -1,6 +1,6 @@
 # homebridge-videodoorbell
 
-Video-Doorbell plugin (based on KhaosT ffmpeg plugin) 
+Video-Doorbell plugin based on [homebridge-camera-ffmpeg](https://github.com/KhaosT/homebridge-camera-ffmpeg) 
 for [Homebridge](https://github.com/nfarina/homebridge)
 
 ## Installation
