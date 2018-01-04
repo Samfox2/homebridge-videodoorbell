@@ -6,7 +6,7 @@ for [Homebridge](https://github.com/nfarina/homebridge)
 Bring your doorbell to trigger a curl command and you get a notification to your mobile phone!   
 
 Compared to a "simple" camera plugin this plugin uses the homekit video doorbell profile.
-A small webserver is opened to interface with the physical world. By opening the site (or triggering with a script) a "doorbell" notification with picture is triggered to all icloud connected devices. 
+A small webserver is opened to interface with the physical world. By opening the site (or triggering with a script) a "doorbell" notification with picture is send to all icloud connected devices. 
 
 ## Triggering HomeKit rich notifications
  
