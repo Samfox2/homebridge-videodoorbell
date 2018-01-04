@@ -3,10 +3,10 @@
 Video-Doorbell plugin based on [homebridge-camera-ffmpeg](https://github.com/KhaosT/homebridge-camera-ffmpeg) 
 for [Homebridge](https://github.com/nfarina/homebridge)
 
-Bring your doorbell to trigger a curl command and you get a notification to your mobile phone!   
+Bring your doorbell to trigger a web request and you will receive a "doorbell" notification with snapshot at your mobile phone!   
 
 Compared to a "simple" camera plugin this plugin uses the homekit video doorbell profile.
-A small webserver is opened to interface with the physical world. By opening the site (or triggering with a script) a "doorbell" notification with picture is send to all icloud connected devices. 
+A small webserver is opened to interface with the physical world. By opening the site (or triggering with a script) a "doorbell" notification with snapshot is send to all icloud connected devices. If the same (homekit) room containing this camera also has a Lock mechanism accessory, the notification will show a working UNLOCK button. Homekit/iOS will link them together automatically when they are in the same room.
 
 ## Triggering HomeKit rich notifications
  
