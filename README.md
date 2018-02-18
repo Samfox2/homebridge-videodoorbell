@@ -1,7 +1,6 @@
-# homebridge-videodoorbell[![npm version]
-(https://badge.fury.io/js/homebridge-videodoorbell.svg)](https://badge.fury.io/js/homebridge-videodoorbell)
+# homebridge-videodoorbell
 
-
+[![npm version](https://badge.fury.io/js/homebridge-videodoorbell.svg)](https://badge.fury.io/js/homebridge-videodoorbell)
 
 Video-Doorbell plugin based on [homebridge-camera-ffmpeg](https://github.com/KhaosT/homebridge-camera-ffmpeg) 
 for [Homebridge](https://github.com/nfarina/homebridge)
