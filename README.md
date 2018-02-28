@@ -43,11 +43,15 @@ curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:POR
       ]
     }
 
-* Optional parameter vcodec, if your running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option.
+#### Optional Parameters
+
+* `vcodec`, if your running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option.
+* `audio`, can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see http://praveen.life/2016/06/26/compile-ffmpeg-for-raspberry-pi-3/
+* `packetSize`, can be set to a multiple of 188, default 1316. If audio or video is choppy try a smaller value.
 
 ```
 {
-  "platform": "Video-doorbell",
+  "platform": "Camera-ffmpeg",
   "cameras": [
     {
       "name": "Camera Name",
@@ -59,7 +63,9 @@ curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:POR
       	"maxHeight": 720,
       	"maxFPS": 30,
       	"vcodec": "h264_omx",
-	"port": 5005            
+      	"audio": true,
+      	"packetSize": 188,
+        "port": 5005  
       }
     }
   ]
@@ -91,7 +97,7 @@ To enable this feature, please add a new config option "uploader", and follow th
       	"maxHeight": 720,
       	"maxFPS": 30,
       	"vcodec": "h264_omx",
-	"port": 5005         
+	    "port": 5005         
       }
     }
   ]
