@@ -99,8 +99,14 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             //var speakerService = new Service.Speaker("Speaker");
             //videodoorbellAccessory.addService(speakerService);
 
-            //var microphoneService = new Service.Microphone("Microphone");
-            //videodoorbellAccessory.addService(microphoneService);
+            if (videoConfig.audio) {
+
+                var microphoneService = new Service.Microphone("Microphone");
+
+                videodoorbellAccessory.addService(microphoneService);
+
+            }
+
 
             configuredAccessories.push(videodoorbellAccessory);
 
