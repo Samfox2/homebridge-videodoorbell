@@ -334,6 +334,12 @@ FFMPEG.prototype.createCameraControlService = function() {
   var controlService = new Service.CameraControl();
 
   this.services.push(controlService);
+  
+  if(this.audio){
+    var microphoneService = new Service.Microphone();
+    this.services.push(microphoneService);
+  }
+  
 }
 
 // Private
