@@ -99,15 +99,6 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             //var speakerService = new Service.Speaker("Speaker");
             //videodoorbellAccessory.addService(speakerService);
 
-            if (videoConfig.audio) {
-
-                var microphoneService = new Service.Microphone("Microphone");
-
-                videodoorbellAccessory.addService(microphoneService);
-
-            }
-
-
             configuredAccessories.push(videodoorbellAccessory);
 
             // DBG: Fire an event 10s after start 
