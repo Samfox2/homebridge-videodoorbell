@@ -41,6 +41,10 @@ You can trigger a homekit rich notification from outside with a simple curl comm
 
 #### Optional Parameters
 
+## global per-camera parameters
+* `port` is the HTTP port that the doorbell listens on, default 5005
+* `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
+## videoConfig Parameters
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
 * `maxWidth` is the maximum width of the generated stream to avoid unnecessary upscaling, default 1280
 * `maxHeight` is the maximum height of the generated stream to avoid unnecessary upscaling, default 720
@@ -56,6 +60,7 @@ You can trigger a homekit rich notification from outside with a simple curl comm
     {
       "name": "Camera Name",
       "port": 5005,
+      "throttle": 3000,
       "videoConfig": {
       	"source": "-re -i rtsp://myfancy_rtsp_stream",
       	"stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",

@@ -72,6 +72,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             var cameraName = cameraConfig.name;
             var videoConfig = cameraConfig.videoConfig;
             var webserverPort = cameraConfig.port || 5005;
+            var throttleAmount = cameraConfig.throttle || 10000;
 
             if (!cameraName || !videoConfig) {
                 console.log("Missing parameters.");
@@ -107,12 +108,10 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             //primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
             //}.bind(this), 10000);
 
-
-
             videodoorbellAccessory.createBellEvent = throttle(function() {
                 self.EventWithAccessory(videodoorbellAccessory);
                 self.log("Video-doorbell %s rang!", cameraName);
-            }, 10000);
+            }, throttleAmount);
 
             // Create http-server to trigger doorbell from outside:
             // curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
