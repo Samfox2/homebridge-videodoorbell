@@ -33,7 +33,7 @@ You can trigger a homekit rich notification from outside with a simple curl comm
           "port": 5005,
           "videoConfig": {
           	"source": "-re -i rtsp://myfancy_rtsp_stream",
-            "stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
+          	"stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
           }
         }
       ]
@@ -58,7 +58,7 @@ You can trigger a homekit rich notification from outside with a simple curl comm
       "port": 5005,
       "videoConfig": {
       	"source": "-re -i rtsp://myfancy_rtsp_stream",
-        "stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
+      	"stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
       	"maxStreams": 2,
       	"maxWidth": 1280,
       	"maxHeight": 720,
