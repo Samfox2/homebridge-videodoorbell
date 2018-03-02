@@ -101,7 +101,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
             configuredAccessories.push(videodoorbellAccessory);
 
-            // DBG: Fire an event 10s after start 
+            // DBG: Fire an event 10s after start
             //setTimeout(function () {
             //console.log("Ding Dong Ding");
             //primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
@@ -110,15 +110,20 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
             self.api.publishCameraAccessories("Video-doorbell", configuredAccessories);
 
-            // Create http-server to trigger doorbell from outside: 
+            var createBellEvent = throttle(function() {
+                // All the taxing stuff you do
+                self.EventWithAccessory(videodoorbellAccessory);
+                self.log("Video-doorbell %s rang!", cameraName);
+            }, 10000);
+
+            // Create http-server to trigger doorbell from outside:
             // curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
             var server = http.createServer(function (req, res) {
                 req.pipe(concat(function (body) {
-                    var params = qs.parse(body.toString());
-                    res.end(JSON.stringify(params) + '\n');
-                    // todo: add validation
-                    console.log("Video-doorbell %s rang!", cameraName);
-                    self.EventWithAccessory(videodoorbellAccessory);
+                  var params = qs.parse(body.toString());
+                  res.end(JSON.stringify(params) + '\n');
+                  // todo: add validation
+                  createBellEvent();
                 }));
             });
 
@@ -134,6 +139,20 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
     }
 }
 
+function throttle(fn, threshold, scope) {
+  threshold || (threshold = 250);
+  var last, deferTimer;
+  return function() {
+    var context = scope || this;
+    var now = +new Date, args = arguments;
+    if (last && now < last + threshold) {
+    } else {
+      last = now;
+      fn.apply(context, args);
+    }
+  };
+}
+
 //videodoorbellPlatform.prototype.handleRequest = function (request, response) {
 
 //    //console.log("Video-doorbell: request");
@@ -144,4 +163,3 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 //        self.EventWithAccessory(videodoorbellAccessory);
 //    }));
 //}
-
