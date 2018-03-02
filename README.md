@@ -27,10 +27,10 @@ You can trigger a homekit rich notification from outside with a simple curl comm
 
     {
       "platform": "Video-doorbell",
-      "port": 5005,
       "cameras": [
         {
           "name": "Camera Name",
+          "port": 5005,
           "videoConfig": {
           	"source": "-re -i rtsp://myfancy_rtsp_stream",
             "stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
