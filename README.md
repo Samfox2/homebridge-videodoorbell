@@ -13,7 +13,7 @@ A small webserver is opened to interface with the physical world. By opening the
 ## Triggering HomeKit rich notifications
 
 You can trigger a homekit rich notification from outside with a simple curl command:
-curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:PORT_DEFINED_IN_CONFIG
+`curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:PORT_DEFINED_IN_CONFIG`
 
 ## Installation
 
