@@ -17,7 +17,7 @@ You can trigger a homekit rich notification from outside with a simple curl comm
 
 ## Installation
 
-1. Install ffmpeg on your Mac
+1. Install ffmpeg on your computer
 2. Install this plugin using: npm install -g homebridge-videodoorbell
 3. Edit ``config.json`` and add the camera.
 3. Run Homebridge
