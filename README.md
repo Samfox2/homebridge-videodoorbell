@@ -7,7 +7,7 @@ for [Homebridge](https://github.com/nfarina/homebridge)
 
 Receive a "doorbell" notification with snapshot to your mobile phone! Use a HTTP request or any other HomeKit button to trigger the event.
 
-Compared to a "simple" camera plugin this plugin uses the HomeKit video doorbell profile. A "doorbell" notification with snapshot is send to all iCloud connected devices. If the same (HomeKit) room containing this camera also has a Lock mechanism accessory, the notification will show a working UNLOCK button. HomeKit/iOS will link them together automatically when they are in the same room.
+Compared to a "simple" camera plugin this plugin uses the HomeKit video doorbell profile. A "doorbell" notification with snapshot is sent to all iCloud connected devices. If the same (HomeKit) room containing this camera also has a Lock mechanism accessory, the notification will show a working UNLOCK button. HomeKit/iOS will link them together automatically when they are in the same room.
 
 ## Triggering HomeKit rich notifications
 
