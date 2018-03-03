@@ -14,7 +14,7 @@ Compared to a "simple" camera plugin this plugin uses the HomeKit video doorbell
 You can trigger a HomeKit rich notification from outside with a simple curl command:
 `curl -X POST -d 'ding=dong&dong=ding' http://IP_OF_HOMEBRIDGE_RUNNING_DEVICE:PORT_DEFINED_IN_CONFIG`
 
-You can also show a trigger button in HomeKit that activates the doorbell notification. Use the HomeKit automation system to have other buttons or actions in HomeKit trigger the doorbell notification.
+You can also show a trigger button in HomeKit that activates the doorbell notification. Use the HomeKit automation system to have other buttons or events in HomeKit trigger the doorbell notification.
 
 ## Installation
 
@@ -44,7 +44,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 
 ##### global per-camera parameters
 * `port` is the HTTP port that the doorbell listens on, default = server disabled
-* `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other button in HomeKit, default false
+* `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other event in HomeKit, default false
 * `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
 ##### videoConfig Parameters
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
