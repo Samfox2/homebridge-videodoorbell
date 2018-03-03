@@ -116,7 +116,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                 switchService.getCharacteristic(Characteristic.On)
                 .on('set', function(state, callback){
                     if(state){
-                        eventFunction();
+                        videodoorbellAccessory.createBellEvent();
                         setTimeout(function(){
                             switchService.getCharacteristic(Characteristic.On).updateValue(false);
                         }, 1000);
