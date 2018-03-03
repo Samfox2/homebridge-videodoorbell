@@ -100,8 +100,6 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             //var speakerService = new Service.Speaker("Speaker");
             //videodoorbellAccessory.addService(speakerService);
 
-            configuredAccessories.push(videodoorbellAccessory);
-
             // DBG: Fire an event 10s after start
             //setTimeout(function () {
             //console.log("Ding Dong Ding");
@@ -113,26 +111,49 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                 self.log("Video-doorbell %s rang!", cameraName);
             }, throttleAmount);
 
+            if(cameraConfig.button) {
+                var switchService = new Service.Switch(cameraName + " Trigger");
+                switchService.getCharacteristic(Characteristic.On)
+                .on('set', function(state, callback){
+                    if(state){
+                        eventFunction();
+                        setTimeout(function(){
+                            switchService.getCharacteristic(Characteristic.On).updateValue(false);
+                        }, 1000);
+                    }
+                    callback(null, state);
+                })
+                .on('get', function(callback){
+                    callback(null, false);
+                });
+                videodoorbellAccessory.addService(switchService);
+            }
+
+            configuredAccessories.push(videodoorbellAccessory);
+
             // Create http-server to trigger doorbell from outside:
             // curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
-            videodoorbellAccessory.server = http.createServer(function (req, res) {
-                req.pipe(concat(function (body) {
-                  var params = qs.parse(body.toString());
-                  res.end(JSON.stringify(params) + '\n');
-                  // todo: add validation
-                  videodoorbellAccessory.createBellEvent();
-                }));
-            });
+            if(cameraConfig.port) {
+                videodoorbellAccessory.server = http.createServer(function (req, res) {
+                    req.pipe(concat(function (body) {
+                      var params = qs.parse(body.toString());
+                      res.end(JSON.stringify(params) + '\n');
+                      // todo: add validation
+                      videodoorbellAccessory.createBellEvent();
+                    }));
+                });
 
-            //var server = http.createServer(self.handleRequest.bind(this));
-            videodoorbellAccessory.server.listen(webserverPort, function () {
-                console.log("Video-doorbell %s is listening on port %s", cameraName, webserverPort);
-            }.bind(this));
+                //var server = http.createServer(self.handleRequest.bind(this));
+                videodoorbellAccessory.server.listen(webserverPort, function () {
+                    console.log("Video-doorbell %s is listening on port %s", cameraName, webserverPort);
+                }.bind(this));
 
-            videodoorbellAccessory.server.on('error', function (err) {
-                console.log("Video-doorbell %s Port %s Server %s ", cameraName, webserverPort, err);
-            }.bind(this));
+                videodoorbellAccessory.server.on('error', function (err) {
+                    console.log("Video-doorbell %s Port %s Server %s ", cameraName, webserverPort, err);
+                }.bind(this));
+            }
         });
+
 
         self.api.publishCameraAccessories("Video-doorbell", configuredAccessories);
     }
