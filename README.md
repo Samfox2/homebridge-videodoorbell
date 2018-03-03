@@ -18,7 +18,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 
 ## Installation
 
-1. Install ffmpeg on your computer
+1. Install ffmpeg on your computer, see here a for compilation guide on RasPi: https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki
 2. Install this plugin using: npm install -g homebridge-videodoorbell
 3. Edit ``config.json`` and add the camera.
 3. Run Homebridge
@@ -52,7 +52,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 * `maxHeight` is the maximum height of the generated stream to avoid unnecessary upscaling, default 720
 * `maxFPS` is the maximum frame rate of the stream, default 10
 * `vcodec` If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default "libx264"
-* `audio` can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki, default false
+* `audio` can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see above, default false
 * `packetSize` If audio or video is choppy try a smaller value, set to a multiple of 188, default 1316
 
 ```
