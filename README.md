@@ -43,7 +43,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 #### Optional Parameters
 
 ##### global per-camera parameters
-* `port` is the HTTP port that the doorbell listens on, omit to not have it listen, default 5005
+* `port` is the HTTP port that the doorbell listens on, default = server disabled
 * `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other button in HomeKit, default false
 * `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
 ##### videoConfig Parameters
