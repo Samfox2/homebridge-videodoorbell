@@ -72,7 +72,8 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
       	"maxFPS": 30,
       	"vcodec": "h264_omx",
       	"audio": true,
-      	"packetSize": 188
+      	"packetSize": 188,
+      	"debug": true
       }
     }
   ]
