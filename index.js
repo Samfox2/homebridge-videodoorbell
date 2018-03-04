@@ -87,7 +87,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).on('get', self.getState.bind(this));
 
             // Setup and configure the camera services
-            var cameraSource = new FFMPEG(hap, cameraConfig);
+            var cameraSource = new FFMPEG(hap, cameraConfig, self.log);
             videodoorbellAccessory.configureCameraSource(cameraSource);
 
             // Setup HomeKit doorbell service
