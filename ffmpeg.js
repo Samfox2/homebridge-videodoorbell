@@ -326,6 +326,13 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             console.log(data.toString());
           });
         }
+        ffmpeg.on('close', (code) => {
+          if(code!=0){
+            this.log("Stopped streaming");
+          } else {
+            this.log("ERROR: FFmpeg exited with code " + code);
+          }
+        });
         this.ongoingSessions[sessionIdentifier] = ffmpeg;
       }
 
@@ -334,9 +341,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
       var ffmpegProcess = this.ongoingSessions[sessionIdentifier];
       if (ffmpegProcess) {
         ffmpegProcess.kill('SIGKILL');
-        this.log("Stopped ffmpeg");
       }
-
       delete this.ongoingSessions[sessionIdentifier];
     }
   }
