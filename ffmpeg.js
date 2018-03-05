@@ -25,6 +25,7 @@ function FFMPEG(hap, cameraConfig, log) {
   this.acodec = ffmpegOpt.acodec;
   this.packetsize = ffmpegOpt.packetSize
   this.fps = ffmpegOpt.maxFPS || 10;
+  this.maxBitrate = ffmpegOpt.maxBitrate || 300;
   this.debug = ffmpegOpt.debug;
 
   if (!ffmpegOpt.source) {
@@ -143,7 +144,7 @@ FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
   let ffmpeg = spawn('ffmpeg', (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
   var imageBuffer = Buffer(0);
   this.log("Snapshot from " + this.name + " at " + resolution);
-  if(this.debug) this.log('ffmpeg '+imageSource + ' -t 1 -s '+ resolution + ' -f image2 -');
+  if(this.debug) console.log('ffmpeg '+imageSource + ' -t 1 -s '+ resolution + ' -f image2 -');
   ffmpeg.stdout.on('data', function(data) {
     imageBuffer = Buffer.concat([imageBuffer, data]);
   });
@@ -243,7 +244,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         var width = 1280;
         var height = 720;
         var fps = this.fps || 30;
-        var vbitrate = 300;
+        var vbitrate = this.maxBitrate;
         var abitrate = 32;
         var asamplerate = 16;
         var vcodec = this.vcodec || 'libx264';
@@ -259,8 +260,9 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           if (expectedFPS < fps) {
             fps = expectedFPS;
           }
-
-          vbitrate = videoInfo["max_bit_rate"];
+          if(videoInfo["max_bit_rate"] < vbitrate) {
+            vbitrate = videoInfo["max_bit_rate"];
+          }
         }
 
         let audioInfo = request["audio"];
@@ -281,6 +283,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           ' -vcodec ' + vcodec +
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
+          ' -f rawvideo -tune zerolatency' +
           ' -vf scale=' + width + ':' + height +
           ' -b:v ' + vbitrate + 'k' +
           ' -bufsize ' + vbitrate + 'k' +
@@ -318,7 +321,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         let ffmpeg = spawn('ffmpeg', ffmpegCommand.split(' '), {env: process.env});
         this.log("Start streaming video from " + this.name + " with " + width + "x" + height + "@" + vbitrate + "kBit");
         if(this.debug){
-          this.log("ffmpeg " + ffmpegCommand);
+          console.log("ffmpeg " + ffmpegCommand);
           ffmpeg.stderr.on('data', function(data) {
             console.log(data.toString());
           });
