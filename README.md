@@ -3,6 +3,7 @@
 [![npm version](https://badge.fury.io/js/homebridge-videodoorbell.svg)](https://badge.fury.io/js/homebridge-videodoorbell)
 [![npm](https://img.shields.io/npm/dt/homebridge-videodoorbell.svg)](https://www.npmjs.com/package/homebridge-videodoorbell)
 [![GitHub last commit](https://img.shields.io/github/last-commit/samfox2/homebridge-videodoorbell.svg)](https://github.com/samfox2/homebridge-videodoorbell)
+[![Donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=328DRJATPXYEJ)
 
 Video-Doorbell plugin based on [homebridge-camera-ffmpeg](https://github.com/KhaosT/homebridge-camera-ffmpeg)
 for [Homebridge](https://github.com/nfarina/homebridge)
