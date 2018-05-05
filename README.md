@@ -87,7 +87,6 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
   ]
 }
 ```
-```
 
 #### Using another Video Processor
 
