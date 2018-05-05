@@ -11,7 +11,7 @@ module.exports = {
   FFMPEG: FFMPEG
 };
 
-function FFMPEG(hap, cameraConfig, log) {
+function FFMPEG(hap, cameraConfig, log, videoProcessor) {
   uuid = hap.uuid;
   Service = hap.Service;
   Characteristic = hap.Characteristic;
@@ -21,12 +21,14 @@ function FFMPEG(hap, cameraConfig, log) {
   var ffmpegOpt = cameraConfig.videoConfig;
   this.name = cameraConfig.name;
   this.vcodec = ffmpegOpt.vcodec;
+  this.videoProcessor = videoProcessor || 'ffmpeg';
   this.audio = ffmpegOpt.audio;
   this.acodec = ffmpegOpt.acodec;
   this.packetsize = ffmpegOpt.packetSize
   this.fps = ffmpegOpt.maxFPS || 10;
   this.maxBitrate = ffmpegOpt.maxBitrate || 300;
   this.debug = ffmpegOpt.debug;
+  this.additionalCommandline = ffmpegOpt.additionalCommandline || '-tune zerolatency';
 
   if (!ffmpegOpt.source) {
     throw new Error("Missing source for camera.");
@@ -48,7 +50,7 @@ function FFMPEG(hap, cameraConfig, log) {
   var numberOfStreams = ffmpegOpt.maxStreams || 2;
   var videoResolutions = [];
 
-  this.maxWidth = ffmpegOpt.maxWidth || 1280;
+  this.maxWidth = ffmpegOpt.maxWidth || 1280;
   this.maxHeight = ffmpegOpt.maxHeight || 720;
   var maxFPS = (this.fps > 30) ? 30 : this.fps;
 
@@ -141,12 +143,17 @@ FFMPEG.prototype.handleCloseConnection = function(connectionID) {
 FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
   let resolution = request.width + 'x' + request.height;
   var imageSource = this.ffmpegImageSource !== undefined ? this.ffmpegImageSource : this.ffmpegSource;
-  let ffmpeg = spawn('ffmpeg', (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
+  let ffmpeg = spawn(this.videoProcessor, (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
   var imageBuffer = Buffer(0);
   this.log("Snapshot from " + this.name + " at " + resolution);
   if(this.debug) console.log('ffmpeg '+imageSource + ' -t 1 -s '+ resolution + ' -f image2 -');
   ffmpeg.stdout.on('data', function(data) {
     imageBuffer = Buffer.concat([imageBuffer, data]);
+  });
+  let self = this;
+  ffmpeg.on('error', function(error){
+    self.log("An error occurs while making snapshot request");
+    self.debug ? self.log(error) : null;
   });
   ffmpeg.on('close', function(code) {
     if ( this.uploader )
@@ -250,6 +257,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         var vcodec = this.vcodec || 'libx264';
         var acodec = this.acodec || 'libfdk_aac';
         var packetsize = this.packetsize || 1316; // 188 376
+        var additionalCommandline = this.additionalCommandline ;
 
         let videoInfo = request["video"];
         if (videoInfo) {
@@ -283,10 +291,12 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           ' -vcodec ' + vcodec +
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
-          ' -f rawvideo -tune zerolatency' +
-          ' -vf scale=' + width + ':' + height +
+          ' -f rawvideo' +
+          ' ' + additionalCommandline +
+          ((vcodec !== 'copy') ? (' -vf scale=' + width + ':' + height) : '') +
           ' -b:v ' + vbitrate + 'k' +
-          ' -bufsize ' + vbitrate + 'k' +
+          ' -bufsize ' + vbitrate+ 'k' +
+          ' -maxrate '+ vbitrate + 'k' +
           ' -payload_type 99' +
           ' -ssrc ' + videoSsrc +
           ' -f rtp' +
@@ -318,17 +328,27 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             '&pkt_size=' + packetsize;
         }
 
-        let ffmpeg = spawn('ffmpeg', ffmpegCommand.split(' '), {env: process.env});
+        let ffmpeg = spawn(this.videoProcessor, ffmpegCommand.split(' '), {env: process.env});
         this.log("Start streaming video from " + this.name + " with " + width + "x" + height + "@" + vbitrate + "kBit");
         if(this.debug){
           console.log("ffmpeg " + ffmpegCommand);
-          ffmpeg.stderr.on('data', function(data) {
-            console.log(data.toString());
-          });
         }
+
+        // Always setup hook on stderr.
+        // Without this streaming stops within one to two minutes.
+        ffmpeg.stderr.on('data', function(data) {
+          // Do not log to the console if debugging is turned off
+          if(this.debug){
+            console.log(data.toString());
+          }
+        });
         let self = this;
+        ffmpeg.on('error', function(error){
+            self.log("An error occurs while making stream request");
+            self.debug ? self.log(error) : null;
+        });
         ffmpeg.on('close', (code) => {
-          if(code == null || code == 0 || code == 255){
+          if(code == null || code == 0 || code == 255){
             self.log("Stopped streaming");
           } else {
             self.log("ERROR: FFmpeg exited with code " + code);

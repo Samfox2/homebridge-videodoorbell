@@ -63,6 +63,8 @@ videodoorbellPlatform.prototype.EventWithAccessory = function (accessory) {
 
 videodoorbellPlatform.prototype.didFinishLaunching = function () {
     var self = this;
+    
+    var videoProcessor = self.config.videoProcessor || 'ffmpeg';
 
     if (self.config.cameras) {
         var configuredAccessories = [];
@@ -87,7 +89,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).on('get', self.getState.bind(this));
 
             // Setup and configure the camera services
-            var cameraSource = new FFMPEG(hap, cameraConfig, self.log);
+            var cameraSource = new FFMPEG(hap, cameraConfig, self.log, videoProcessor);
             videodoorbellAccessory.configureCameraSource(cameraSource);
 
             // Setup HomeKit doorbell service
