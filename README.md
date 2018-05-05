@@ -69,6 +69,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
   "cameras": [
     {
       "name": "Camera Name",
+      "port": 5005,
       "button": true,
       "throttle": 3000,
       "videoConfig": {
