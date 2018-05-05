@@ -65,7 +65,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 
 ```
 {
-  "platform": "Camera-ffmpeg",
+  "platform": "Video-doorbell",
   "cameras": [
     {
       "name": "Camera Name",
@@ -84,6 +84,31 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
       	"debug": true
       }
     }
+  ]
+}
+```
+```
+
+#### Using another Video Processor
+
+* `videoProcessor` is the video processor used to manage videos. eg: ffmpeg (by default) or avconv or /a/path/to/another/ffmpeg. Need to use the same parameters than ffmpeg.
+
+```
+{
+  "platform": "Video-doorbell",
+  "videoProcessor": "avconv",
+  "cameras": [
+    ...
+  ]
+}
+```
+
+```
+{
+  "platform": "Video-doorbell",
+  "videoProcessor": "/my/own/compiled/ffmpeg",
+  "cameras": [
+    ...
   ]
 }
 ```
