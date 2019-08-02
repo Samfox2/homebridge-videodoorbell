@@ -135,7 +135,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
             // Create http-server to trigger doorbell from outside:
             // curl -X POST -d 'ding=dong&dong=ding' http://HOMEBRIDGEIP:PORT
-            if(cameraConfig.port) {
+            if(webserverPort) {
                 videodoorbellAccessory.server = http.createServer(function (req, res) {
                     req.pipe(concat(function (body) {
                       var params = qs.parse(body.toString());
