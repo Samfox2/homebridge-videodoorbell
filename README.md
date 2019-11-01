@@ -51,6 +51,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 ##### global per-camera parameters
 * `port` is the HTTP port that the doorbell listens on, default = server disabled
 * `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other event in HomeKit, default false
+* `motion` show a trigger button in HomeKit that can be activated to trigger a motion detected signal, use with HomeKit automation to trigger your video camera a motion detected message using any other event in HomeKit, default false
 * `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
 ##### videoConfig Parameters
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
@@ -71,6 +72,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
       "name": "Camera Name",
       "port": 5005,
       "button": true,
+      "motion": true,
       "throttle": 3000,
       "videoConfig": {
       	"source": "-re -i rtsp://myfancy_rtsp_stream",
