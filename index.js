@@ -114,7 +114,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             }, throttleAmount);
 
             if(cameraConfig.button) {
-                var switchService = new Service.Switch(cameraName + " Trigger");
+                var switchService = new Service.Switch(cameraName + " Doorbell-trigger",  " Bell-trigger");
                 switchService.getCharacteristic(Characteristic.On)
                 .on('set', function(state, callback){
                     if(state){
@@ -129,6 +129,19 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                     callback(null, false);
                 });
                 videodoorbellAccessory.addService(switchService);
+            }
+
+            if (cameraConfig.motion) {
+                var buttonMotion = new Service.Switch(cameraName);
+                var motionswitchService = new Service.Switch(cameraName + " Motion-trigger",  " Motion-trigger");
+                
+                videodoorbellAccessory.addService(motionswitchService);
+
+                var motion = new Service.MotionSensor(cameraName + " Motion");
+                videodoorbellAccessory.addService(motion);
+
+                motionswitchService.getCharacteristic(Characteristic.On)
+                    .on('set', _Motion.bind(videodoorbellAccessory));
             }
 
             configuredAccessories.push(videodoorbellAccessory);
@@ -156,7 +169,6 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             }
         });
 
-
         self.api.publishCameraAccessories("Video-doorbell", configuredAccessories);
     }
 }
@@ -173,6 +185,21 @@ function throttle(fn, threshold, scope) {
       fn.apply(context, args);
     }
   };
+}
+
+function _Motion(on, callback) {
+  console.log("Setting %s Motion to %s", this.displayName, on);
+
+  this.getService(Service.MotionSensor).setCharacteristic(Characteristic.MotionDetected, (on ? 1 : 0));
+  if (on) {
+    setTimeout(_Reset.bind(this), 5000);
+  }
+  callback();
+}
+
+function _Reset() {
+  console.log("Setting %s Motion trigger to false", this.displayName);
+  this.getService(Service.Switch).setCharacteristic(Characteristic.On, false);
 }
 
 //videodoorbellPlatform.prototype.handleRequest = function (request, response) {
