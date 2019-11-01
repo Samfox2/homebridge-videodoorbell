@@ -2,7 +2,7 @@
 
   "name": "homebridge-videodoorbell",
 
-  "version": "0.2.1",
+  "version": "0.2.2",
 
   "description": "Video doorbell plugin for homebridge: https://github.com/nfarina/homebridge",
 
