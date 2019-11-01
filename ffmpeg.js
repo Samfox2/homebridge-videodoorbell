@@ -29,7 +29,10 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
   this.maxBitrate = ffmpegOpt.maxBitrate || 300;
   this.debug = ffmpegOpt.debug;
   this.additionalCommandline = ffmpegOpt.additionalCommandline || '-tune zerolatency';
-
+  this.vflip = ffmpegOpt.vflip || false;
+  this.hflip = ffmpegOpt.hflip || false;
+  this.videoFilter = ffmpegOpt.videoFilter || null; // null is a valid discrete value
+  
   if (!ffmpegOpt.source) {
     throw new Error("Missing source for camera.");
   }
@@ -286,14 +289,27 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         let targetAudioPort = sessionInfo["audio_port"];
         let audioKey = sessionInfo["audio_srtp"];
         let audioSsrc = sessionInfo["audio_ssrc"];
+        let vf = [];
 
+        let videoFilter = ((this.videoFilter === '') ? ('scale=' + width + ':' + height + '') : (this.videoFilter)); // empty string indicates default
+        // In the case of null, skip entirely
+        if (videoFilter !== null && videoFilter !== 'none') {
+          vf.push(videoFilter)
+
+          if(this.hflip)
+            vf.push('hflip');
+
+          if(this.vflip)
+            vf.push('vflip');
+        }
+        
         let ffmpegCommand = this.ffmpegSource + ' -map 0:0' +
           ' -vcodec ' + vcodec +
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
           ' -f rawvideo' +
           ' ' + additionalCommandline +
-          ((vcodec !== 'copy') ? (' -vf scale=' + width + ':' + height) : '') +
+          ((vcodec !== 'copy' && vf.length > 0) ? (' -vf ' + vf.join(',')) : ('')) +
           ' -b:v ' + vbitrate + 'k' +
           ' -bufsize ' + vbitrate+ 'k' +
           ' -maxrate '+ vbitrate + 'k' +
