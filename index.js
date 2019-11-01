@@ -114,7 +114,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             }, throttleAmount);
 
             if(cameraConfig.button) {
-                var switchService = new Service.Switch(cameraName + " Doorbell-trigger",  " Bell-trigger");
+                var switchService = new Service.Switch(cameraName + " Doorbell-trigger",  " Doorbell-trigger");
                 switchService.getCharacteristic(Characteristic.On)
                 .on('set', function(state, callback){
                     if(state){
