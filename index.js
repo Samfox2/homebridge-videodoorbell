@@ -112,7 +112,20 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                 self.EventWithAccessory(videodoorbellAccessory);
                 self.log("Video-doorbell %s rang!", cameraName);
             }, throttleAmount);
+            
+            if (cameraConfig.motion) {
+                var buttonMotion = new Service.Switch(cameraName);
+                var motionswitchService = new Service.Switch(cameraName + " Motion-trigger",  " Motion-trigger");
+                
+                videodoorbellAccessory.addService(motionswitchService);
 
+                var motion = new Service.MotionSensor(cameraName + " Motion");
+                videodoorbellAccessory.addService(motion);
+
+                motionswitchService.getCharacteristic(Characteristic.On)
+                    .on('set', _Motion.bind(videodoorbellAccessory));
+            }
+            
             if(cameraConfig.button) {
                 var switchService = new Service.Switch(cameraName + " Doorbell-trigger",  " Doorbell-trigger");
                 switchService.getCharacteristic(Characteristic.On)
@@ -130,20 +143,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                 });
                 videodoorbellAccessory.addService(switchService);
             }
-
-            if (cameraConfig.motion) {
-                var buttonMotion = new Service.Switch(cameraName);
-                var motionswitchService = new Service.Switch(cameraName + " Motion-trigger",  " Motion-trigger");
-                
-                videodoorbellAccessory.addService(motionswitchService);
-
-                var motion = new Service.MotionSensor(cameraName + " Motion");
-                videodoorbellAccessory.addService(motion);
-
-                motionswitchService.getCharacteristic(Characteristic.On)
-                    .on('set', _Motion.bind(videodoorbellAccessory));
-            }
-
+            
             configuredAccessories.push(videodoorbellAccessory);
 
             // Create http-server to trigger doorbell from outside:
@@ -192,7 +192,7 @@ function _Motion(on, callback) {
 
   this.getService(Service.MotionSensor).setCharacteristic(Characteristic.MotionDetected, (on ? 1 : 0));
   if (on) {
-    setTimeout(_Reset.bind(this), 5000);
+    setTimeout(_Reset.bind(this), 500);
   }
   callback();
 }
