@@ -51,7 +51,7 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 ##### global per-camera parameters
 * `port` is the HTTP port that the doorbell listens on, default = server disabled
 * `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other event in HomeKit, default false
-* `motion` show a trigger button in HomeKit that can be activated to trigger a motion detected signal, use with HomeKit automation to trigger your video camera a motion detected message using any other event in HomeKit, default false
+* `motion` a dummy switch and motion sensor are created as part of the camera. And by turning on the switch, it will trigger the dummy motion sensor, which will then send a Photo Notification to your iPhone/iPad. To turn on the switch, you can create an automation from your real motion sensor, and have it turn on the dummy switch attached to the camera, default false
 * `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
 ##### videoConfig Parameters
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
