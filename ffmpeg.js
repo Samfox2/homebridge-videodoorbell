@@ -32,6 +32,8 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
   this.vflip = ffmpegOpt.vflip || false;
   this.hflip = ffmpegOpt.hflip || false;
   this.videoFilter = ffmpegOpt.videoFilter || null; // null is a valid discrete value
+  this.mapvideo = ffmpegOpt.mapvideo || "0:0";
+  this.mapaudio = ffmpegOpt.mapaudio || "0:1";
   
   if (!ffmpegOpt.source) {
     throw new Error("Missing source for camera.");
@@ -261,6 +263,8 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         var acodec = this.acodec || 'libfdk_aac';
         var packetsize = this.packetsize || 1316; // 188 376
         var additionalCommandline = this.additionalCommandline ;
+        var mapvideo = this.mapvideo;
+        var mapaudio = this.mapaudio;
 
         let videoInfo = request["video"];
         if (videoInfo) {
@@ -303,7 +307,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             vf.push('vflip');
         }
         
-        let ffmpegCommand = this.ffmpegSource + ' -map 0:0' +
+        let ffmpegCommand = this.ffmpegSource + ' -map ' + mapvideo +
           ' -vcodec ' + vcodec +
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
@@ -324,7 +328,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           '&pkt_size=' + packetsize;
 
         if(this.audio){
-          ffmpegCommand+= ' -map 0:1' +
+          ffmpegCommand+= ' -map ' + mapaudio +
             ' -acodec ' + acodec +
             ' -profile:a aac_eld' +
             ' -flags +global_header' +
