@@ -53,6 +53,10 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 * `button` show a trigger button in HomeKit that can be activated to trigger the doorbell, use with HomeKit automation to trigger your doorbell using any other event in HomeKit, default false
 * `motion` a dummy switch and motion sensor are created as part of the camera. And by turning on the switch, it will trigger the dummy motion sensor, which will then send a Photo Notification to your iPhone/iPad. To turn on the switch, you can create an automation from your real motion sensor, and have it turn on the dummy switch attached to the camera, default false
 * `throttle` is the amount of time in milliseconds that the plugin waits before sending a new doorbell message to HomeKit, for clients that spawn a lot of messages, default 10000
+* `manufacturer` set manufacturer name for display in the Home app
+* `model` set model for display in the Home app
+* `serialNumber` set serial number for display in the Home app
+* `firmwareRevision` set firmware revision for display in the Home app
 ##### videoConfig Parameters
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
 * `maxWidth` is the maximum width of the generated stream to avoid unnecessary upscaling, default 1280
@@ -79,6 +83,10 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
       "button": true,
       "motion": true,
       "throttle": 3000,
+      "manufacturer": "ACME, Inc.",
+      "model": "ABC-123",
+      "serialNumber": "1234567890",
+      "firmwareRevision": "1.0",
       "videoConfig": {
       	"source": "-re -i rtsp://myfancy_rtsp_stream",
       	"stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
