@@ -83,7 +83,20 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
             var uuid = UUIDGen.generate(cameraName);
             var videodoorbellAccessory = new Accessory(cameraName, uuid, hap.Accessory.Categories.VIDEO_DOORBELL);
-
+            var videodoorbellAccessoryInfo = videodoorbellAccessory.getService(Service.AccessoryInformation);
+            if (cameraConfig.manufacturer) {
+                videodoorbellAccessoryInfo.setCharacteristic(Characteristic.Manufacturer, cameraConfig.manufacturer);
+            }
+            if (cameraConfig.model) {
+                videodoorbellAccessoryInfo.setCharacteristic(Characteristic.Model, cameraConfig.model);
+            }
+            if (cameraConfig.serialNumber) {
+                videodoorbellAccessoryInfo.setCharacteristic(Characteristic.SerialNumber, cameraConfig.serialNumber);
+            }
+            if (cameraConfig.firmwareRevision) {
+                videodoorbellAccessoryInfo.setCharacteristic(Characteristic.FirmwareRevision, cameraConfig.firmwareRevision);
+            }
+            
             // Doorbell has to be the primary service
             var primaryService = new Service.Doorbell(cameraName);
             primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).on('get', self.getState.bind(this));
