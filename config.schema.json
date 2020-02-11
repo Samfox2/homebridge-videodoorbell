@@ -100,6 +100,16 @@
                     "default": 1316,
                     "multipleOf": 188.0
                 },
+                "mapvideo": {
+                    "title": "Map Video",
+                    "type": "string",
+                    "required": false
+                },
+                "mapaudio": {
+                    "title": "Map Audio",
+                    "type": "string",
+                    "required": false
+                },
                 "audio": {
                     "title": "Enable Audio?",
                     "type": "boolean",
