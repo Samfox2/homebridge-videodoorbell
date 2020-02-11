@@ -112,6 +112,11 @@
                 }
             }
           },
+          "videoProcessor":{
+            "title": "Video Processor",
+            "type": "string",
+            "required": false
+          },
           "manufacturer":{
             "title": "Manufacturer",
             "type": "string",
