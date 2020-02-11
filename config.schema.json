@@ -133,8 +133,7 @@
                 },
                 "audio": {
                     "title": "Enable Audio?",
-                    "type": "boolean",
-                    "default": false
+                    "type": "string"
                 },
                 "debug": {
                     "title": "Enable Debug Mode?",
