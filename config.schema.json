@@ -116,6 +116,21 @@
                     "type": "string",
                     "required": false
                 },
+                "videofilter": {
+                    "title": "Video Filter",
+                    "type": "string",
+                    "required": false
+                },
+                "vflip": {
+                    "title": "Enable Vertical Flip",
+                    "type": "boolean",
+                    "default": false
+                },
+                "hflip": {
+                    "title": "Enable Horizontal Flip",
+                    "type": "boolean",
+                    "default": false
+                },
                 "audio": {
                     "title": "Enable Audio?",
                     "type": "boolean",
