@@ -12,7 +12,7 @@
     },
     "cameras": {
       "type": "array",
-      "items": [{
+      "items": {
         "title": "Camera Config",
         "type": "object",
         "properties": {
@@ -168,7 +168,7 @@
             "required": false
           }
         }
-      }]
+      }
     }
   }
 }
