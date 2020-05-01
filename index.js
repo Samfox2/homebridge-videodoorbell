@@ -182,7 +182,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             }
         });
 
-        self.api.publishCameraAccessories("Homebridge-videodoorbell", configuredAccessories);
+        self.api.publishCameraAccessories("homebridge-videodoorbell", configuredAccessories);
     }
 }
 
