@@ -42,22 +42,24 @@ videodoorbellPlatform.prototype.configureAccessory = function (accessory) {
 videodoorbellPlatform.prototype.getState = function (callback) {
     var self = this;
 
-    console.log("Power state is %s", self.binaryState);
+    self.log("Power state is %s", self.binaryState);
     callback(null, self.binaryState);
 }
 
 // Method to handle identify request
 videodoorbellPlatform.prototype.identify = function (primaryService, paired, callback) {
-    console.log("Identify requested!");
+    var self = this;
+    self.log("Identify requested!");
 
     // Dbg:
-    console.log("Ding Dong!");
+    self.log("Ding Dong!");
     primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
     callback();
 }
 
 videodoorbellPlatform.prototype.EventWithAccessory = function (accessory) {
-    console.log("Ding Dong!");
+    var self = this;
+    self.log("Ding Dong!");
     accessory.getService(Service.Doorbell).getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
 }
 
@@ -77,12 +79,14 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             var throttleAmount = cameraConfig.throttle || 10000;
 
             if (!cameraName || !videoConfig) {
-                console.log("Missing parameters.");
+                self.log("Missing parameters.");
                 return;
             }
 
             var uuid = UUIDGen.generate(cameraName);
             var videodoorbellAccessory = new Accessory(cameraName, uuid, hap.Accessory.Categories.VIDEO_DOORBELL);
+	    videodoorbellAccessory.log = self.log;
+	
             var videodoorbellAccessoryInfo = videodoorbellAccessory.getService(Service.AccessoryInformation);
             if (cameraConfig.manufacturer) {
                 videodoorbellAccessoryInfo.setCharacteristic(Characteristic.Manufacturer, cameraConfig.manufacturer);
@@ -117,7 +121,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
             // DBG: Fire an event 10s after start
             //setTimeout(function () {
-            //console.log("Ding Dong Ding");
+            //self.log("Ding Dong Ding");
             //primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
             //}.bind(this), 10000);
 
@@ -173,11 +177,11 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
 
                 //var server = http.createServer(self.handleRequest.bind(this));
                 videodoorbellAccessory.server.listen(webserverPort, function () {
-                    console.log("Video-doorbell %s is listening on port %s", cameraName, webserverPort);
+                    self.log("Video-doorbell %s is listening on port %s", cameraName, webserverPort);
                 }.bind(this));
 
                 videodoorbellAccessory.server.on('error', function (err) {
-                    console.log("Video-doorbell %s Port %s Server %s ", cameraName, webserverPort, err);
+                    self.log("Video-doorbell %s Port %s Server %s ", cameraName, webserverPort, err);
                 }.bind(this));
             }
         });
@@ -201,7 +205,8 @@ function throttle(fn, threshold, scope) {
 }
 
 function _Motion(on, callback) {
-  console.log("Setting %s Motion to %s", this.displayName, on);
+  var self = this;
+  self.log("Setting %s Motion to %s", this.displayName, on);
 
   this.getService(Service.MotionSensor).setCharacteristic(Characteristic.MotionDetected, (on ? 1 : 0));
   if (on) {
@@ -211,13 +216,14 @@ function _Motion(on, callback) {
 }
 
 function _Reset() {
-  console.log("Setting %s Motion trigger to false", this.displayName);
+  var self = this;
+  self.log("Setting %s Motion trigger to false", this.displayName);
   this.getService(Service.Switch).setCharacteristic(Characteristic.On, false);
 }
 
 //videodoorbellPlatform.prototype.handleRequest = function (request, response) {
 
-//    //console.log("Video-doorbell: request");
+//    //self.log("Video-doorbell: request");
 //    request.pipe(concat(function (body) {
 //        var params = qs.parse(body.toString());
 //        response.end(JSON.stringify(params) + '\n');
