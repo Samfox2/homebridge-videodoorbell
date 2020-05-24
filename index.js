@@ -49,10 +49,7 @@ videodoorbellPlatform.prototype.getState = function (callback) {
 // Method to handle identify request
 videodoorbellPlatform.prototype.identify = function (primaryService, paired, callback) {
     var self = this;
-    self.log("Identify requested!");
-
-    // Dbg:
-    self.log("Ding Dong!");
+    //self.log("Identify requested!");
     primaryService.getCharacteristic(Characteristic.ProgrammableSwitchEvent).setValue(0);
     callback();
 }
