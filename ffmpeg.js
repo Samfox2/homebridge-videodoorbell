@@ -57,6 +57,10 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
 
   this.maxWidth = ffmpegOpt.maxWidth || 1280;
   this.maxHeight = ffmpegOpt.maxHeight || 720;
+  
+  this.nativeWidth = ffmpegOpt.nativeWidth || -1;
+  this.nativeHeight = ffmpegOpt.nativeHeight || -1;
+  
   var maxFPS = (this.fps > 30) ? 30 : this.fps;
 
   if (this.maxWidth >= 320) {
@@ -255,6 +259,8 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
       if (sessionInfo) {
         var width = 1280;
         var height = 720;
+        var nativeWidth = this.nativeWidth;
+        var nativeHeight = this.nativeHeight;
         var fps = this.fps || 30;
         var vbitrate = this.maxBitrate;
         var abitrate = 32;
@@ -305,6 +311,13 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
 
           if(this.vflip)
             vf.push('vflip');
+        }
+        
+        if (width == nativeWidth && height == nativeHeight) {// cam native resolution
+          vcodec= 'copy';
+          if(this.debug){
+                console.log("Native resolution request: copy stream");
+          }
         }
         
         let ffmpegCommand = this.ffmpegSource + ' -map ' + mapvideo +
