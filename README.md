@@ -61,6 +61,8 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
 * `maxStreams` is the maximum number of streams that will be generated for this camera, default 2
 * `maxWidth` is the maximum width of the generated stream to avoid unnecessary upscaling, default 1280
 * `maxHeight` is the maximum height of the generated stream to avoid unnecessary upscaling, default 720
+* `nativeWidth` is the native width of the camera stream to avoid unnecessary encoding, default -1 = off
+* `nativeHeight` is the native height of the camera stream to avoid unnecessary encoding, default -1 = off
 * `maxFPS` is the maximum frame rate of the stream, default 10
 * `maxBitrate` is the maximum frame rate of the stream in kbit/s, default 300
 * `vcodec` If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default "libx264"
@@ -91,8 +93,10 @@ You can also show a trigger button in HomeKit that activates the doorbell notifi
       	"source": "-re -i rtsp://myfancy_rtsp_stream",
       	"stillImageSource": "-i http://faster_still_image_grab_url/this_is_optional.jpg",
       	"maxStreams": 2,
-      	"maxWidth": 1280,
-      	"maxHeight": 720,
+      	"maxWidth": 1920,
+      	"maxHeight": 1080,
+        "nativeWidth": 1920,
+        "nativeHeight": 1080,
       	"maxFPS": 30,
       	"vcodec": "h264_omx",
       	"audio": true,
