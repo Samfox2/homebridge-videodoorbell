@@ -81,6 +81,20 @@
                     "minimum": 1,
                     "description": "The maximum height reported to HomeKit"
                 },
+                "nativeWidth": {
+                    "title": "Native Stream Width",
+                    "type": "integer",
+                    "default": 1280,
+                    "minimum": 1,
+                    "description": "The native camera stream width where re-encoding can be skipped"
+                },
+                "nativeHeight": {
+                    "title": "Native Stream Height",
+                    "type": "integer",
+                    "default": 720,
+                    "minimum": 1,
+                    "description": "The native camera stream height where re-encoding can be skipped"
+                },
                 "maxFPS": {
                     "title": "Maximum FPS",
                     "type": "integer",
