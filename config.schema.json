@@ -130,7 +130,7 @@
                     "type": "string",
                     "required": false
                 },
-                "videofilter": {
+                "videoFilter": {
                     "title": "Video Filter",
                     "type": "string",
                     "required": false
