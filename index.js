@@ -128,15 +128,14 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
             }, throttleAmount);
             
             if (cameraConfig.motion) {
-                var buttonMotion = new Service.Switch(cameraName);
-                var motionswitchService = new Service.Switch(cameraName + " Motion-trigger",  " Motion-trigger");
+                var buttonMotion = new Service.Switch(cameraName + " Motion-trigger",  " Motion-trigger");
                 
-                videodoorbellAccessory.addService(motionswitchService);
+                videodoorbellAccessory.addService(buttonMotion);
 
-                var motion = new Service.MotionSensor(cameraName + " Motion");
+                var motion = new Service.MotionSensor(cameraName + " Motion-sensor");
                 videodoorbellAccessory.addService(motion);
 
-                motionswitchService.getCharacteristic(Characteristic.On)
+                buttonMotion.getCharacteristic(Characteristic.On)
                     .on('set', _Motion.bind(videodoorbellAccessory));
             }
             
@@ -150,7 +149,7 @@ videodoorbellPlatform.prototype.didFinishLaunching = function () {
                             switchService.getCharacteristic(Characteristic.On).updateValue(false);
                         }, 1000);
                     }
-                    callback(null, state);
+                    callback();
                 })
                 .on('get', function(callback){
                     callback(null, false);
