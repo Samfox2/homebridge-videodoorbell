@@ -115,6 +115,7 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
     }
   }
 
+   // Homekit Options
   let options = {
     proxy: false, // Requires RTP/RTCP MUX Proxy
     srtp: true, // Supports SRTP AES_CM_128_HMAC_SHA1_80 encryption
@@ -139,19 +140,24 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
     }
   }
 
+   // Create Homebridge Service and Controllers
   this.createCameraControlService();
   this._createStreamControllers(numberOfStreams, options);
 }
 
+// Handle Connnection Close
 FFMPEG.prototype.handleCloseConnection = function(connectionID) {
   this.streamControllers.forEach(function(controller) {
     controller.handleCloseConnection(connectionID);
   });
 }
 
+// Handle Snapshot Request
 FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
   let resolution = request.width + 'x' + request.height;
   var imageSource = this.ffmpegImageSource !== undefined ? this.ffmpegImageSource : this.ffmpegSource;
+
+   // Grab Image
   let ffmpeg = spawn(this.videoProcessor, (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
   var imageBuffer = Buffer(0);
   this.log("Snapshot from " + this.name + " at " + resolution);
@@ -159,7 +165,10 @@ FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
   ffmpeg.stdout.on('data', function(data) {
     imageBuffer = Buffer.concat([imageBuffer, data]);
   });
+  
+    // Callbacks
   let self = this;
+  
   ffmpeg.on('error', function(error){
     self.log("An error occurs while making snapshot request");
     self.debug ? self.log(error) : null;
@@ -171,16 +180,21 @@ FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
   }.bind(this));
 }
 
+// Prepare Stream
 FFMPEG.prototype.prepareStream = function(request, callback) {
   var sessionInfo = {};
 
+// Session ID and Target IP Address
   let sessionID = request["sessionID"];
   let targetAddress = request["targetAddress"];
 
+// Record in Response
   sessionInfo["address"] = targetAddress;
 
+// Declare Response
   var response = {};
 
+// Video Request
   let videoInfo = request["video"];
   if (videoInfo) {
     let targetPort = videoInfo["port"];
@@ -192,6 +206,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
     ssrcSource[0] = 0;
     let ssrc = ssrcSource.readInt32BE(0, true);
 
+// Video Response
     let videoResp = {
       port: targetPort,
       ssrc: ssrc,
@@ -199,6 +214,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
       srtp_salt: srtp_salt
     };
 
+    // Record in Response
     response["video"] = videoResp;
 
     sessionInfo["video_port"] = targetPort;
@@ -206,6 +222,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
     sessionInfo["video_ssrc"] = ssrc;
   }
 
+  // Audio Request
   let audioInfo = request["audio"];
   if (audioInfo) {
     let targetPort = audioInfo["port"];
@@ -231,6 +248,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
     sessionInfo["audio_ssrc"] = ssrc;
   }
 
+  // Get Current IP Address
   let currentAddress = ip.address();
   var addressResp = {
     address: currentAddress
@@ -242,6 +260,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
     addressResp["type"] = "v6";
   }
 
+// Record in Response
   response["address"] = addressResp;
   this.pendingSessions[uuid.unparse(sessionID)] = sessionInfo;
 
@@ -249,6 +268,7 @@ FFMPEG.prototype.prepareStream = function(request, callback) {
 }
 
 FFMPEG.prototype.handleStreamRequest = function(request) {
+// Get Session ID and Request Type
   var sessionID = request["sessionID"];
   var requestType = request["type"];
   if (sessionID) {
